@@ -1,7 +1,5 @@
 # HabitCents – Habit & Expense Tracker
 
-HabitCents is a productivity application that helps users build positive habits while managing their day-to-day finances. The system allows users to track daily habit completion, maintain streaks based on habit difficulty, and monitor monthly expenses against a predefined budget.
-
 HabitCents is a productivity platform that helps users build their positive habits while also contributing in managing their day-to-day financial expenses. The platform allows users to track daily habit completion, maintain streaks based on them and also monitor their personal expenses along with tons of other features as well.
 
 ---
