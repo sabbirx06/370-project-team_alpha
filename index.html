@@ -32,13 +32,24 @@
     <div class="container-fluid navbar-container">
       <nav class="navbar navbar-expand navbar-dark bg-dark">
         <a class="navbar-brand" href="index.html">Habitcents</a>
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item nav-signup d-flex gap-2">
-              <button type="button" class="btn btn-primary" onclick="window.location.href='signup.html'">Sign Up</button>
-              <button type="button" class="btn btn-outline-light" onclick="window.location.href='login.html'">Login</button>
-            </li>
-          </ul>
-        </div>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item nav-signup d-flex gap-2">
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="window.location.href = 'signup.html'"
+            >
+              Sign Up
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-light"
+              onclick="window.location.href = 'login.html'"
+            >
+              Login
+            </button>
+          </li>
+        </ul>
       </nav>
     </div>
 
@@ -51,16 +62,28 @@
           Welcome to Habitcents! <br />
           Your personal habit and expense tracker
         </p>
-        <button type="button" class="btn btn-primary btn-lg btn-get-started mt-4" onclick="window.location.href='signup.html'">
+        <button
+          type="button"
+          class="btn btn-primary btn-lg btn-get-started mt-4"
+          onclick="window.location.href = 'signup.html'"
+        >
           Get Started
         </button>
+        <div class="d-flex gap-3 justify-content-center mt-4">
+          <a href="habits.html" class="btn btn-outline-light btn-lg">
+            Go to Habits
+          </a>
+          <a href="expenses.html" class="btn btn-primary btn-lg">
+            Go to Expenses
+          </a>
+        </div>
       </div>
     </div>
 
-    <footer class="container-fluid"> 
-         <div class="container text-center py-3">
-          <p class="mb-0">Made with ❤️ by Mohammed Sabbir Ahmed</p>
-        </div>
+    <footer class="container-fluid">
+      <div class="container text-center py-3">
+        <p class="mb-0">Made with ❤️ by Mohammed Sabbir Ahmed</p>
+      </div>
     </footer>
 
     <script
