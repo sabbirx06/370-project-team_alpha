@@ -1,0 +1,91 @@
+* {
+  font-family: "Bricolage Grotesque", sans-serif;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.hero-bg {
+  background-color: #bbe1fa;
+  flex: 1;
+  background: linear-gradient(135deg, #0f172a, #1e3a5f, #0f4c75);
+  color: white;
+  padding-top: 55px;
+}
+
+.main-heading {
+  font-size: 5rem;
+  font-weight: bold;
+  font-family: "Playfair Display", serif;
+  color: #bbe1fa;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  opacity: 0.9;
+}
+
+.logo-dash {
+  width: 200px;
+  height: auto;
+  margin: 0;
+}
+
+.text-dash {
+  font-size: 1.25rem;
+  font-weight: 400;
+  font-family: "Bricolage Grotesque", sans-serif;
+  max-width: 700px;
+  margin-bottom: 2.5rem;
+}
+
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 700px;
+  /* min-height: 100vh; */
+  margin: auto;
+}
+
+.navbar-container {
+  padding: 0;
+}
+
+.navbar {
+  background-color: #1b262c !important;
+}
+
+.navbar-brand {
+  padding: 0 0 0 1rem;
+}
+
+.btn-get-started {
+  background-color: #bbe1fa;
+  color: #0f172a;
+}
+
+.nav-signup {
+  margin: 0 1rem;
+}
+.nav-login {
+  margin: 0 1rem;
+}
+
+.navbar .btn {
+  width: 100px;
+}
+
+.logo-nav {
+  width: 40px;
+  height: auto;
+  margin-right: 0;
+}
+
+footer {
+  background-color: #bbe1fa;
+  color: #1b262c;
+}
