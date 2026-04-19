@@ -23,11 +23,10 @@
     />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="expenses.css" />
+    <link rel="stylesheet" href="dashboard.css" />
     <link rel="icon" href="media/favicon.svg" type="image/svg+xml" />
   </head>
   <body>
-    <!--Navbar-->
     <div class="container-fluid navbar-container">
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <!--Left-->
@@ -36,78 +35,54 @@
         <!--Right-->
         <ul class="navbar-nav d-flex flex-row mx-auto gap-4">
           <li class="nav-item">
-            <a class="nav-link" href="dashboard.html">Dashboard</a>
+            <a class="nav-link active" href="dashboard.html">Dashboard</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="habits.html">Habits</a>
           </li>
           <li class="nav-item d-flex gap-2">
-            <a class="nav-link active" href="expenses.html">Expenses</a>
+            <a class="nav-link" href="expenses.html">Expenses</a>
           </li>
         </ul>
       </nav>
     </div>
 
-    <!--Adding habits with difficulty scoring section-->
-    <div class="container mt-5 habit-containter">
+    <div class="container mt-5">
       <div class="row g-4">
         <div class="col-12">
-          <div class="card p-3 habit-card mb-2">
-            <h4>Monthly Budget</h4>
-            <h5 id="monthly-budget">&#2547; 0</h5>
-            <div id="budget-form">
-              <input
-                type="number"
-                id="budget-amount"
-                class="form-control mt-2"
-                placeholder="Place your budget"
-              />
-              <button class="btn btn-primary w-100 mt-3" onclick="addBudget()">
-                Add Budget
-              </button>
-            </div>
-            <button
-              class="btn btn-outline-info btn mt-2"
-              onclick="resetBudget()"
-              style="display: none"
-              id="change-budget-btn"
-            >
-              Change Budget
-            </button>
-          </div>
-        </div>
+          <div class="card p-5 habit-card text-center">
+            <h2 id="greeting-text">Hello, User!</h2>
 
-        <div class="col-12">
-          <div class="card p-3 habit-card">
-            <h4>Add expenses</h4>
-            <input
-              type="text"
-              id="expense-name"
-              class="form-control mb-2 mt-2"
-              placeholder="Enter expense name"
-            />
-
-            <input
-              type="number"
-              id="expense-amount"
-              class="form-control mt-2"
-              placeholder="Place your expense amount"
-            />
-            <button class="btn btn-primary w-100 mt-3" onclick="addExpense()">
-              Add Expense
-            </button>
-          </div>
-        </div>
-
-        <div class="col-12">
-          <div class="card p-3 expense-list-card">
-            <h4>Expense List</h4>
-            <ul class="list-group mt-3" id="expense-list">
-              <!-- Habit items will be added here dynamically -->
-            </ul>
+            <p class="mt-3 fs-5">
+              You completed
+              <span id="habit-progress">0/0</span> habits today
+            </p>
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="container mt-5">
+      <div class="row g-4">
+        <div class="col-12">
+          <div class="card p-5 habit-card text-center">
+            <h4>Remaining Budget</h4>
+            <h2 id="dashboard-budget" class="mt-4 fs-1">৳ 0</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mt-5 mb-4 d-flex justify-content-center gap-4">
+      <a href="habits.html" class="btn btn-outline-success px-4">
+        Add Habits
+      </a>
+
+      <a href="index.html" class="btn btn-outline-danger px-4"> Go to Home </a>
+
+      <a href="expenses.html" class="btn btn-outline-warning px-4">
+        Show Expenses
+      </a>
     </div>
 
     <footer

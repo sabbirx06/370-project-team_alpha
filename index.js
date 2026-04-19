@@ -247,3 +247,41 @@ function updateBudgetUI() {
     el.style.color = "lightgreen";
   }
 }
+
+function updateHabitProgress() {
+  const today = new Date().toDateString();
+
+  let completed = 0;
+  for (let i = 0; i < habits.length; i++) {
+    if (habits[i].lastCompleted === today) {
+      completed++;
+    }
+  }
+
+  const total = habits.length;
+  document.querySelector("#habit-progress").innerText = completed + "/" + total;
+}
+
+function updateDashboardBudget() {
+  let spent = 0;
+  for (let i = 0; i < expenses.length; i++) {
+    spent += expenses[i].amount;
+  }
+
+  const remaining = monthlyBudget - spent;
+  const elem = document.querySelector("#dashboard-budget");
+  elem.innerText = "৳ " + remaining;
+
+  if (remaining < 1000) {
+    elem.style.color = "red";
+  } else if (remaining > 1000 && remaining < 3000) {
+    elem.style.color = "yellow";
+  } else {
+    elem.style.color = "green";
+  }
+}
+
+window.onload = function () {
+  updateHabitProgress();
+  updateDashboardBudget();
+};

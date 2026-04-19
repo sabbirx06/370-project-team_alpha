@@ -44,3 +44,9 @@ input[type="checkbox"] {
   transform: translateY(-2px);
   transition: 0.2s ease;
 }
+
+footer {
+  background-color: #bbe1fa;
+  color: #1b262c;
+  margin-top: auto;
+}
