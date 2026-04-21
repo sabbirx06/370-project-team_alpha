@@ -23,28 +23,28 @@
     />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="media/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="icon" href="/media/favicon.svg" type="image/svg+xml" />
   </head>
 
   <body>
     <!--Navbar-->
     <div class="container-fluid navbar-container">
       <nav class="navbar navbar-expand navbar-dark bg-dark">
-        <a class="navbar-brand" href="index.html">Habitcents</a>
+        <a class="navbar-brand" href="/habits">Habitcents</a>
         <ul class="navbar-nav ms-auto">
           <li class="nav-item nav-signup d-flex gap-2">
             <button
               type="button"
               class="btn btn-primary"
-              onclick="window.location.href = 'signup.html'"
+              onclick="window.location.href = '/signup'"
             >
               Sign Up
             </button>
             <button
               type="button"
               class="btn btn-outline-light"
-              onclick="window.location.href = 'login.html'"
+              onclick="window.location.href = '/login'"
             >
               Login
             </button>
@@ -56,7 +56,7 @@
     <!-- Hero Section -->
     <div class="container-fluid hero-bg">
       <div class="hero-text align-items-center text-center">
-        <img src="media/logo.png" alt="Habitcents logo" class="logo-dash" />
+        <img src="/media/logo.png" alt="Habitcents logo" class="logo-dash" />
         <h1 class="main-heading">Habitcents</h1>
         <p class="text-dash">
           Welcome to Habitcents! <br />
@@ -65,15 +65,15 @@
         <button
           type="button"
           class="btn btn-primary btn-lg btn-get-started mt-4"
-          onclick="window.location.href = 'signup.html'"
+          onclick="window.location.href = '/signup'"
         >
           Get Started
         </button>
         <div class="d-flex gap-3 justify-content-center mt-4">
-          <a href="habits.html" class="btn btn-outline-light btn-lg">
+          <a href="/habits" class="btn btn-outline-light btn-lg">
             Go to Habits
           </a>
-          <a href="expenses.html" class="btn btn-primary btn-lg">
+          <a href="/expenses" class="btn btn-primary btn-lg">
             Go to Expenses
           </a>
         </div>
@@ -91,6 +91,6 @@
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
-    <script src="index.js"></script>
+    <script src="/js/index.js"></script>
   </body>
 </html>
