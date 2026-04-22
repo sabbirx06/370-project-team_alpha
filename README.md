@@ -94,3 +94,14 @@ A leaderboard ranks users based on their **highest habit streaks**, encouraging 
 | Backend | PHP / Node.js |
 | Frontend | HTML, CSS, JavaScript |
 
+
+## Noramlised Schema Diagram
+
+<img width="1238" height="644" alt="image" src="https://github.com/user-attachments/assets/48beca11-eca1-4e30-8a06-18c30e440075" />
+
+---
+
+## EER diagram
+
+<img width="1604" height="789" alt="EER Diagram_HabitCents_370 drawio" src="https://github.com/user-attachments/assets/571cd498-4d5f-47ba-b554-85820c2722e6" />
+
