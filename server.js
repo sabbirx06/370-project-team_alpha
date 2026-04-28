@@ -20,7 +20,7 @@ app.use(
   }),
 );
 
-// ================= PAGE ROUTES =================
+// page routes
 
 app.get("/", (req, res) => {
   res.render("index");
@@ -35,7 +35,7 @@ app.get("/signup", (req, res) => {
 });
 
 app.get("/dashboard", (req, res) => {
-  if (!req.session.user) return res.redirect("/login");
+  if (!req.session.user) return res.redirect("/login");  //user verification
   res.render("dashboard", { user: req.session.user });
 });
 
@@ -54,7 +54,13 @@ app.get("/leaderboard", (req, res) => {
   res.render("leaderboard");
 });
 
-// ================= AUTH =================
+app.get("/savings", (req, res) => {
+  if (!req.session.user) return res.redirect("/login");
+  res.render("savings");
+});
+
+
+// authentication
 
 app.post("/signup", (req, res) => {
   const { name, email, password } = req.body;
@@ -84,7 +90,7 @@ app.post("/login", (req, res) => {
   });
 });
 
-// ================= HABITS =================
+// habits section
 
 app.post("/add-habit", (req, res) => {
   const { name, difficulty, category } = req.body;
@@ -195,7 +201,7 @@ app.get("/streak", (req, res) => {
   );
 });
 
-// ================= BUDGET =================
+// budgets 
 
 app.post("/set-budget", (req, res) => {
   const { amount } = req.body;
@@ -285,7 +291,7 @@ app.get("/remaining-budget", (req, res) => {
   );
 });
 
-// ================= EXPENSES =================
+// expenses
 
 app.post("/add-expense", (req, res) => {
   const { name, amount } = req.body;
@@ -335,7 +341,7 @@ app.post("/delete-expense", (req, res) => {
   );
 });
 
-// ================= DASHBOARD =================
+// dashboard
 
 app.get("/dashboard-data", (req, res) => {
   const user_id = req.session.user.user_id;
@@ -405,6 +411,43 @@ app.get("/get-leaderboard", (req, res) => {
         leaderboard: result,
         currentUserId: req.session.user.user_id,
       });
+    },
+  );
+});
+
+app.post("/add-goal", (req, res) => {
+  const user_id = req.session.user.user_id;
+  const { name, target } = req.body;
+
+  db.query(
+    "INSERT INTO savings_goals (user_id, name, target_amount) VALUES (?, ?, ?)",
+    [user_id, name, target],
+    () => res.redirect("/savings"),
+  );
+});
+
+app.get("/savings-data", (req, res) => {
+  const user_id = req.session.user.user_id;
+
+  db.query(
+    "SELECT * FROM savings_goals WHERE user_id = ?",
+    [user_id],
+    (err, results) => res.json(results),
+  );
+});
+
+
+
+app.post("/add-saving", (req, res) => {
+  const user_id = req.session.user.user_id;
+  const { goal_id, amount } = req.body;
+
+  db.query(
+    "UPDATE savings_goals SET saved_amount = COALESCE(saved_amount, 0) + ? WHERE goal_id = ? AND user_id = ?",
+    [amount, goal_id, user_id],
+    (err) => {
+      if (err) return res.send("Error updating savings");
+      res.redirect("/savings");
     },
   );
 });
