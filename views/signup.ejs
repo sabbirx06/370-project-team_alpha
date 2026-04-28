@@ -25,11 +25,13 @@
   </head>
 
   <body>
+    <!-- Signup page body: create a new account -->
     <div
       class="container d-flex justify-content-center align-items-center auth-card"
     >
       <div class="card p-4 shadow" style="width: 100%; max-width: 400px">
         <h2 class="text-center mb-4">Signup to Habitcents</h2>
+        <!-- Show signup success or error messages from the server -->
         <% if (typeof query !== 'undefined' && query.error) { %>
   <div class="alert alert-danger text-center">
     <%= query.error %>
@@ -42,6 +44,7 @@
   </div>
 <% } %>
 
+        <!-- Signup form posts new user details to the server -->
         <form action="/signup" method="POST">
           <!-- Name -->
           <div class="mb-3">

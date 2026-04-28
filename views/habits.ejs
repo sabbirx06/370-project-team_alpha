@@ -1,30 +1,5 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
+<%- include("partials/head", { title: "Habits", css: ["/css/base.css"] }) %>
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-      crossorigin="anonymous"
-    />
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/habits.css" />
-    <link rel="icon" href="/media/favicon.svg" type="image/svg+xml" />
-  </head>
   <body>
     <!--Navbar-->
     <%- include("partials/navbar") %>
@@ -33,7 +8,7 @@
     <div class="container mt-5 habit-containter">
       <div class="row g-4">
         <div class="col-12">
-          <div class="card p-3 habit-card">
+          <div class="card p-3 app-card">
             <h4>Add Habit</h4>
             <form action="/add-habit" method="POST" id="add-habit-form">
               <input
@@ -80,7 +55,7 @@
         </div>
 
         <div class="col-12">
-          <div class="card p-3 habit-card mb-4">
+          <div class="card p-3 app-card mb-4">
             <h4>Total Streak Points</h4>
             <h5 id="streak-points">🔥 0</h5>
           </div>
@@ -113,7 +88,7 @@
         </div>
 
         <div class="col-12">
-          <div class="card p-3 habit-list-card">
+          <div class="card p-3 app-card">
             <div class="d-flex justify-content-between align-items-center">
               <h4>Habit List</h4>
               <button
@@ -141,7 +116,10 @@
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
-    <script src="/js/index.js"></script>
+    <script type="module">
+      import { initHabits } from "/js/habits.js";
+      initHabits();
+    </script>
 
     <script>
       function validateAndSubmitHabit() {
