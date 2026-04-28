@@ -104,3 +104,18 @@ A leaderboard ranks users based on their **highest habit streaks**, encouraging 
 | Database | MySQL                 |
 | Backend  | PHP / Node.js         |
 | Frontend | HTML, CSS, JavaScript |
+
+
+--- 
+
+## EER Diagram
+
+<img width="1604" height="789" alt="673518321_2416310138889516_1682432696686418862_n" src="https://github.com/user-attachments/assets/63109443-eb0f-4bc3-9bd7-b52e37fffada" />
+
+
+
+--- 
+
+## Normalised Schema Diagram
+
+<img width="1198" height="641" alt="672478732_2003272990395281_3361666801120849104_n" src="https://github.com/user-attachments/assets/89752bfc-e074-4099-8b61-eadab2a0a9cb" />
