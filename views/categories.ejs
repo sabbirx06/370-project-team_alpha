@@ -1,213 +1,102 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Categories</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Bootstrap -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-
-    <!-- Use same styling as habits -->
-    <link rel="stylesheet" href="/css/categories.css" />
-  </head>
+<%- include("partials/head", { title: "Categories", css: ["/css/base.css"] }) %>
 
   <body>
-    <!-- NAVBAR -->
+    <!-- Navigation bar - shared across all pages -->
     <%- include("partials/navbar") %>
 
-    <!-- CONTENT -->
+    <!-- Main content container -->
     <div class="container mt-5 habit-container">
+      <!-- Page title -->
       <h3 class="mb-4 text-center">Add Habits from Categories</h3>
 
+      <!-- Bootstrap grid layout for categories -->
       <div class="row g-4">
-        <!-- PHYSICAL -->
+        <!-- PHYSICAL category section -->
         <div class="col-12">
-          <div class="card p-3 habit-card">
+          <div class="card p-3 app-card">
+            <!-- Category title -->
             <h5 class="mb-3">Physical</h5>
-
-            <!-- Running -->
-            <div
-              class="card mb-2 p-2 d-flex flex-row justify-content-between align-items-center"
-            >
+            <!-- Loop through physical habits and render each one -->
+            <% presetHabits.physical.forEach(habit => { %>
+            <div class="card mb-2 p-2 d-flex flex-row justify-content-between align-items-center">
               <div class="d-flex align-items-center gap-2">
+                <!-- Checkbox to add/remove habit - uses data attributes for JavaScript -->
                 <input
                   type="checkbox"
-                  data-name="Running"
-                  data-difficulty="5"
+                  data-name="<%= habit.name %>"
+                  data-difficulty="<%= habit.difficulty %>"
                   data-category="physical"
                   onchange="togglePresetHabit(this)"
                 />
-                <span>Running</span>
+                <!-- Display habit name (uses displayName if available, otherwise name) -->
+                <span><%= habit.displayName || habit.name %></span>
               </div>
-              <span class="badge text-dark">🔥 5</span>
+              <!-- Show difficulty as fire emoji with number -->
+              <span class="badge text-dark">🔥 <%= habit.difficulty %></span>
             </div>
-
-            <!-- Pushups -->
-            <div
-              class="card mb-2 p-2 d-flex flex-row justify-content-between align-items-center"
-            >
-              <div class="d-flex align-items-center gap-2">
-                <input
-                  type="checkbox"
-                  data-name="Pushups"
-                  data-difficulty="7"
-                  data-category="physical"
-                  onchange="togglePresetHabit(this)"
-                />
-                <span>Pushups</span>
-              </div>
-              <span class="badge text-dark">🔥 7</span>
-            </div>
-
-            <!-- Cycling -->
-            <div
-              class="card mb-2 p-2 d-flex flex-row justify-content-between align-items-center"
-            >
-              <div class="d-flex align-items-center gap-2">
-                <input
-                  type="checkbox"
-                  data-name="Cycling"
-                  data-difficulty="6"
-                  data-category="physical"
-                  onchange="togglePresetHabit(this)"
-                />
-                <span>Cycling</span>
-              </div>
-              <span class="badge text-dark">🔥 6</span>
-            </div>
+            <% }); %>
           </div>
         </div>
 
-        <!-- SPIRITUAL -->
+        <!-- SPIRITUAL category section -->
         <div class="col-12">
-          <div class="card p-3 habit-card">
+          <div class="card p-3 app-card">
             <h5 class="mb-3">Spiritual</h5>
-
-            <div
-              class="card mb-2 p-2 d-flex flex-row justify-content-between align-items-center"
-            >
+            <!-- Loop through spiritual habits -->
+            <% presetHabits.spiritual.forEach(habit => { %>
+            <div class="card mb-2 p-2 d-flex flex-row justify-content-between align-items-center">
               <div class="d-flex align-items-center gap-2">
                 <input
                   type="checkbox"
-                  data-name="Meditation"
-                  data-difficulty="4"
+                  data-name="<%= habit.name %>"
+                  data-difficulty="<%= habit.difficulty %>"
                   data-category="spiritual"
                   onchange="togglePresetHabit(this)"
                 />
-                <span>Meditation</span>
+                <span><%= habit.displayName || habit.name %></span>
               </div>
-              <span class="badge text-dark">🔥 4</span>
+              <span class="badge text-dark">🔥 <%= habit.difficulty %></span>
             </div>
-
-            <div
-              class="card mb-2 p-2 d-flex flex-row justify-content-between align-items-center"
-            >
-              <div class="d-flex align-items-center gap-2">
-                <input
-                  type="checkbox"
-                  data-name="Prayer"
-                  data-difficulty="3"
-                  data-category="spiritual"
-                  onchange="togglePresetHabit(this)"
-                />
-                <span>Prayer</span>
-              </div>
-              <span class="badge text-dark">🔥 3</span>
-            </div>
-
-            <div
-              class="card mb-2 p-2 d-flex flex-row justify-content-between align-items-center"
-            >
-              <div class="d-flex align-items-center gap-2">
-                <input
-                  type="checkbox"
-                  data-name="Gratitude Journal"
-                  data-difficulty="5"
-                  data-category="spiritual"
-                  onchange="togglePresetHabit(this)"
-                />
-                <span>Gratitude Journal</span>
-              </div>
-              <span class="badge text-dark">🔥 5</span>
-            </div>
+            <% }); %>
           </div>
         </div>
 
-        <!-- HEALTHY -->
+        <!-- HEALTHY category section -->
         <div class="col-12">
-          <div class="card p-3 habit-card">
+          <div class="card p-3 app-card">
             <h5 class="mb-3">Healthy</h5>
-
-            <div
-              class="card mb-2 p-2 d-flex flex-row justify-content-between align-items-center"
-            >
+            <!-- Loop through healthy habits -->
+            <% presetHabits.healthy.forEach(habit => { %>
+            <div class="card mb-2 p-2 d-flex flex-row justify-content-between align-items-center">
               <div class="d-flex align-items-center gap-2">
                 <input
                   type="checkbox"
-                  data-name="Drink Water"
-                  data-difficulty="2"
+                  data-name="<%= habit.name %>"
+                  data-difficulty="<%= habit.difficulty %>"
                   data-category="healthy"
                   onchange="togglePresetHabit(this)"
                 />
-                <span>Drink Water</span>
+                <span><%= habit.displayName || habit.name %></span>
               </div>
-              <span class="badge text-dark">🔥 2</span>
+              <span class="badge text-dark">🔥 <%= habit.difficulty %></span>
             </div>
-
-            <div
-              class="card mb-2 p-2 d-flex flex-row justify-content-between align-items-center"
-            >
-              <div class="d-flex align-items-center gap-2">
-                <input
-                  type="checkbox"
-                  data-name="Sleep Early"
-                  data-difficulty="6"
-                  data-category="healthy"
-                  onchange="togglePresetHabit(this)"
-                />
-                <span>Sleep Early at 10AM</span>
-              </div>
-              <span class="badge text-dark">🔥 6</span>
-            </div>
-
-            <div
-              class="card mb-2 p-2 d-flex flex-row justify-content-between align-items-center"
-            >
-              <div class="d-flex align-items-center gap-2">
-                <input
-                  type="checkbox"
-                  data-name="Eat Healthy"
-                  data-difficulty="5"
-                  data-category="healthy"
-                  onchange="togglePresetHabit(this)"
-                />
-                <span>Eat Healthy</span>
-              </div>
-              <span class="badge text-dark">🔥 5</span>
-            </div>
+            <% }); %>
           </div>
         </div>
       </div>
 
-      <!-- Back button -->
+      <!-- Back button to return to habits page -->
       <div class="text-center my-3">
         <a href="/habits" class="btn btn-primary">Go to Habits</a>
       </div>
     </div>
 
+    <!-- Footer - shared across all pages -->
     <%- include("partials/footer") %>
-    <!-- JS -->
-    <script src="/js/index.js"></script>
+    <!-- Load JavaScript for interactive features -->
+    <script type="module">
+      import { initCategories } from "/js/categories.js";
+      initCategories();
+    </script>
   </body>
 </html>

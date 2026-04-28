@@ -27,13 +27,13 @@
     <link rel="icon" href="/media/favicon.svg" type="image/svg+xml" />
   </head>
   <body>
-    
-    
+    <!-- Login page body: shows the login form to return users -->
 
     <!-- Login and Signup Forms -->
     <div class="container d-flex justify-content-center align-items-center min-height-100vh auth-card">
         <div class = "card p-4 shadow" style="width: 100%; max-width: 400px;">
             <h2 class="text-center mb-4">Login to Habitcents</h2>
+            <!-- Show feedback messages from the server -->
             <% if (typeof query !== 'undefined' && query.error) { %>
   <div class="alert alert-danger text-center">
     <%= query.error %>
@@ -45,6 +45,7 @@
     <%= query.success %>
   </div>
 <% } %>
+            <!-- Login form sends email and password to the server -->
             <form action="/login" method="POST">
                 <div class="mb-3">
                     <label for="email" class="form-label">Email address</label>
@@ -57,9 +58,7 @@
                 <button type="submit" class="btn btn-primary w-100 mb-2">Login</button>
                 <button type="button" class="btn btn-outline-success w-100" onclick="window.location.href='/signup'">Sign Up</button>
             </form>
-
-
-
+        </div>
     </div>
 
 
@@ -72,6 +71,5 @@
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
-    <script src="/js/index.js"></script>
   </body>
 </html>
