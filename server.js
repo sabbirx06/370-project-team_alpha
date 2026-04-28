@@ -20,6 +20,13 @@ app.use(
   }),
 );
 
+function requireLogin(req, res, next) {
+  if (!req.session.user) {
+    return res.redirect("/login?error=Please login first");
+  }
+  next();
+}
+
 // page routes
 
 app.get("/", (req, res) => {
@@ -27,64 +34,80 @@ app.get("/", (req, res) => {
 });
 
 app.get("/login", (req, res) => {
-  res.render("login");
+  if (req.session.user) return res.redirect("/dashboard");
+  res.render("login", { query: req.query });
 });
 
 app.get("/signup", (req, res) => {
-  res.render("signup");
+  if (req.session.user) return res.redirect("/dashboard");
+  res.render("signup", { query: req.query });
 });
 
-app.get("/dashboard", (req, res) => {
-  if (!req.session.user) return res.redirect("/login");  //user verification
-  res.render("dashboard", { user: req.session.user });
+app.get("/dashboard", requireLogin, (req, res) => {
+  res.render("dashboard", { user: req.session.user, page: "dashboard" });
 });
 
-app.get("/habits", (req, res) => {
+app.get("/habits", requireLogin, (req, res) => {
   if (!req.session.user) return res.redirect("/login");
-  res.render("habits");
+  res.render("habits", { page: "habits" });
 });
 
-app.get("/expenses", (req, res) => {
+app.get("/expenses", requireLogin, (req, res) => {
   if (!req.session.user) return res.redirect("/login");
-  res.render("expenses");
+  res.render("expenses", { page: "expenses" });
 });
 
-app.get("/leaderboard", (req, res) => {
+app.get("/leaderboard", requireLogin, (req, res) => {
   if (!req.session.user) return res.redirect("/login");
-  res.render("leaderboard");
+  res.render("leaderboard", { page: "leaderboard" });
 });
 
-app.get("/savings", (req, res) => {
+app.get("/savings", requireLogin, (req, res) => {
   if (!req.session.user) return res.redirect("/login");
-  res.render("savings");
+  res.render("savings", { page: "savings" });
 });
 
+app.get("/categories", requireLogin, (req, res) => {
+  res.render("categories", { page: "categories" });
+});
 
 // authentication
 
 app.post("/signup", (req, res) => {
   const { name, email, password } = req.body;
 
-  db.query(
-    "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-    [name, email, password],
-    (err) => {
-      if (err) return res.send("Signup failed!");
-      res.redirect("/login");
-    },
-  );
+  db.query("SELECT * FROM users WHERE email = ?", [email], (err, result) => {
+    if (result.length > 0) {
+      return res.redirect("/signup?error=Email already exists");
+    }
+
+    db.query(
+      "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+      [name, email, password],
+      (err) => {
+        if (err) {
+          return res.redirect("/signup?error=Signup failed");
+        }
+        res.redirect("/login?success=Account created successfully");
+      },
+    );
+  });
 });
 
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
 
   db.query("SELECT * FROM users WHERE email = ?", [email], (err, result) => {
-    if (result.length === 0) return res.send("User not found");
+    if (result.length === 0) {
+      return res.redirect("/login?error=User not found");
+    }
 
     const user = result[0];
+
     if (user.password !== password) {
-      return res.send("Wrong password!");
+      return res.redirect("/login?error=Incorrect password");
     }
+
     req.session.user = user;
     res.redirect("/dashboard");
   });
@@ -92,27 +115,27 @@ app.post("/login", (req, res) => {
 
 // habits section
 
-app.post("/add-habit", (req, res) => {
+app.post("/add-habit", requireLogin, (req, res) => {
   const { name, difficulty, category } = req.body;
   const user_id = req.session.user.user_id;
   const habit_id = Date.now();
 
   const difficulty_score = Number(difficulty);
   if (difficulty_score < 1 || difficulty_score > 10) {
-    return res.send("Difficulty must be between 1 and 10.");
+    return res.status(400).send("Invalid difficulty");
   }
 
   db.query(
     "INSERT INTO habits (habit_id, user_id, habit_name, difficulty_score, category) VALUES (?, ?, ?, ?, ?)",
     [habit_id, user_id, name, difficulty_score, category],
     (err) => {
-      if (err) return res.send("Error adding habit");
-      res.redirect("/habits");
+      if (err) return res.status(500).send("Error adding habit");
+      res.sendStatus(200);
     },
   );
 });
 
-app.get("/get-habits", (req, res) => {
+app.get("/get-habits", requireLogin, (req, res) => {
   const user_id = req.session.user.user_id;
 
   db.query(
@@ -130,7 +153,7 @@ app.get("/get-habits", (req, res) => {
   );
 });
 
-app.post("/toggle-habit", (req, res) => {
+app.post("/toggle-habit", requireLogin, (req, res) => {
   const { habit_id } = req.body;
   const today = new Date().toLocaleDateString("en-CA");
 
@@ -155,7 +178,7 @@ app.post("/toggle-habit", (req, res) => {
   );
 });
 
-app.post("/delete-habit", (req, res) => {
+app.post("/delete-habit", requireLogin, (req, res) => {
   const { habit_id } = req.body;
   const user_id = req.session.user.user_id;
 
@@ -171,7 +194,7 @@ app.post("/delete-habit", (req, res) => {
   });
 });
 
-app.get("/reset-habits", (req, res) => {
+app.get("/reset-habits", requireLogin, (req, res) => {
   const user_id = req.session.user.user_id;
 
   db.query(
@@ -185,7 +208,7 @@ app.get("/reset-habits", (req, res) => {
   );
 });
 
-app.get("/streak", (req, res) => {
+app.get("/streak", requireLogin, (req, res) => {
   const user_id = req.session.user.user_id;
 
   db.query(
@@ -201,9 +224,9 @@ app.get("/streak", (req, res) => {
   );
 });
 
-// budgets 
+// budgets
 
-app.post("/set-budget", (req, res) => {
+app.post("/set-budget", requireLogin, (req, res) => {
   const { amount } = req.body;
   const user_id = req.session.user.user_id;
 
@@ -223,7 +246,7 @@ app.post("/set-budget", (req, res) => {
   );
 });
 
-app.get("/get-budget", (req, res) => {
+app.get("/get-budget", requireLogin, (req, res) => {
   const user_id = req.session.user.user_id;
 
   const month = new Date().getMonth() + 1;
@@ -239,7 +262,7 @@ app.get("/get-budget", (req, res) => {
   );
 });
 
-app.get("/reset-budget", (req, res) => {
+app.get("/reset-budget", requireLogin, (req, res) => {
   const user_id = req.session.user.user_id;
   const month = new Date().getMonth() + 1;
   const year = new Date().getFullYear();
@@ -251,7 +274,7 @@ app.get("/reset-budget", (req, res) => {
   );
 });
 
-app.get("/remaining-budget", (req, res) => {
+app.get("/remaining-budget", requireLogin, (req, res) => {
   const user_id = req.session.user.user_id;
 
   const month = new Date().getMonth() + 1;
@@ -267,8 +290,11 @@ app.get("/remaining-budget", (req, res) => {
     (err, budgetRes) => {
       if (err) return res.status(500).json({ error: "Database error" });
       if (budgetRes.length === 0)
-        return res.json({ remaining: 0, hasBudget: false });
-
+        return res.json({
+          remaining: 0,
+          totalBudget: 0,
+          hasBudget: false,
+        });
       const total = budgetRes[0].total_budget;
 
       db.query(
@@ -284,7 +310,11 @@ app.get("/remaining-budget", (req, res) => {
           const spent = expenseRes[0].total_expense || 0;
           const remaining = total - spent;
 
-          res.json({ remaining, hasBudget: true });
+          res.json({
+            remaining,
+            totalBudget: total,
+            hasBudget: true,
+          });
         },
       );
     },
@@ -293,29 +323,48 @@ app.get("/remaining-budget", (req, res) => {
 
 // expenses
 
-app.post("/add-expense", (req, res) => {
+app.post("/add-expense", requireLogin, (req, res) => {
   const { name, amount } = req.body;
   const user_id = req.session.user.user_id;
   const today = new Date().toLocaleDateString("en-CA");
 
+  const month = new Date().getMonth() + 1;
+  const year = new Date().getFullYear();
+
   db.query(
-    "SELECT * FROM budgets WHERE user_id = ? ORDER BY budget_id DESC LIMIT 1",
-    [user_id],
+    "SELECT * FROM budgets WHERE user_id = ? AND month = ? AND year = ?",
+    [user_id, month, year],
     (err, result) => {
-      if (result.length === 0) return res.send("Set budget first");
+      if (result.length === 0) {
+        return res.json({ error: "Set a budget first!" });
+      }
 
       const budget_id = result[0].budget_id;
+      const total = result[0].total_budget;
 
       db.query(
-        "INSERT INTO expenses (user_id, budget_id, date, description, amount) VALUES (?, ?, ?, ?, ?)",
-        [user_id, budget_id, today, name, amount],
-        () => res.redirect("/expenses"),
+        "SELECT SUM(amount) AS spent FROM expenses WHERE user_id = ? AND MONTH(date) = ? AND YEAR(date) = ?",
+        [user_id, month, year],
+        (err2, expRes) => {
+          const spent = expRes[0].spent || 0;
+          const newTotal = spent + Number(amount);
+
+          if (newTotal > total) {
+            return res.json({ error: "Budget exceeded!" });
+          }
+
+          db.query(
+            "INSERT INTO expenses (user_id, budget_id, date, description, amount) VALUES (?, ?, ?, ?, ?)",
+            [user_id, budget_id, today, name, amount],
+            () => res.json({ success: true }),
+          );
+        },
       );
     },
   );
 });
 
-app.get("/get-expenses", (req, res) => {
+app.get("/get-expenses", requireLogin, (req, res) => {
   const user_id = req.session.user.user_id;
 
   db.query(
@@ -327,7 +376,7 @@ app.get("/get-expenses", (req, res) => {
   );
 });
 
-app.post("/delete-expense", (req, res) => {
+app.post("/delete-expense", requireLogin, (req, res) => {
   const { expense_id } = req.body;
   const user_id = req.session.user.user_id;
 
@@ -343,7 +392,7 @@ app.post("/delete-expense", (req, res) => {
 
 // dashboard
 
-app.get("/dashboard-data", (req, res) => {
+app.get("/dashboard-data", requireLogin, (req, res) => {
   const user_id = req.session.user.user_id;
   const today = new Date().toLocaleDateString("en-CA");
 
@@ -379,7 +428,12 @@ app.get("/dashboard-data", (req, res) => {
                   const spent = expenseRes[0].spent || 0;
                   const remaining = total - spent;
 
-                  res.json({ totalHabits, completed, remaining });
+                  res.json({
+                    totalHabits,
+                    completed,
+                    remaining,
+                    totalBudget: total,
+                  });
                 },
               );
             },
@@ -392,7 +446,7 @@ app.get("/dashboard-data", (req, res) => {
 
 // ================= LEADERBOARD =================
 
-app.get("/get-leaderboard", (req, res) => {
+app.get("/get-leaderboard", requireLogin, (req, res) => {
   if (!req.session.user)
     return res.status(401).json({ error: "Not logged in" });
 
@@ -415,7 +469,7 @@ app.get("/get-leaderboard", (req, res) => {
   );
 });
 
-app.post("/add-goal", (req, res) => {
+app.post("/add-goal", requireLogin, (req, res) => {
   const user_id = req.session.user.user_id;
   const { name, target } = req.body;
 
@@ -426,7 +480,7 @@ app.post("/add-goal", (req, res) => {
   );
 });
 
-app.get("/savings-data", (req, res) => {
+app.get("/savings-data", requireLogin, (req, res) => {
   const user_id = req.session.user.user_id;
 
   db.query(
@@ -436,9 +490,7 @@ app.get("/savings-data", (req, res) => {
   );
 });
 
-
-
-app.post("/add-saving", (req, res) => {
+app.post("/add-saving", requireLogin, (req, res) => {
   const user_id = req.session.user.user_id;
   const { goal_id, amount } = req.body;
 
@@ -450,6 +502,15 @@ app.post("/add-saving", (req, res) => {
       res.redirect("/savings");
     },
   );
+});
+
+app.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.redirect("/dashboard");
+    }
+    res.redirect("/login?success=Logged out successfully");
+  });
 });
 
 app.listen(PORT, () => {
