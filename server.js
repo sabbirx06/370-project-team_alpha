@@ -122,15 +122,19 @@ app.post("/add-habit", requireLogin, (req, res) => {
 
   const difficulty_score = Number(difficulty);
   if (difficulty_score < 1 || difficulty_score > 10) {
-    return res.status(400).send("Invalid difficulty");
+    return res.redirect("/habits");
   }
 
   db.query(
     "INSERT INTO habits (habit_id, user_id, habit_name, difficulty_score, category) VALUES (?, ?, ?, ?, ?)",
     [habit_id, user_id, name, difficulty_score, category],
     (err) => {
-      if (err) return res.status(500).send("Error adding habit");
-      res.sendStatus(200);
+      if (err) {
+        console.error(err);
+        return res.redirect("/habits");
+      }
+
+      res.redirect("/habits"); // ✅ FIXED
     },
   );
 });
