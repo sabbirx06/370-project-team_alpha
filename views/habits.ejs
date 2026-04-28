@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/habits.css" />
+    <link rel="icon" href="/media/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <!--Navbar-->
+    <div class="container-fluid navbar-container">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <!--Left-->
+        <a class="navbar-brand" href="/">Habitcents</a>
+
+        <!--Right-->
+        <ul class="navbar-nav d-flex flex-row mx-auto gap-4">
+          <li class="nav-item">
+            <a class="nav-link" href="/dashboard">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/habits">Habits</a>
+          </li>
+          <li class="nav-item d-flex gap-2">
+            <a class="nav-link" href="/expenses">Expenses</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/leaderboard">Leaderboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/savings">Savings</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!--Adding habits with difficulty scoring section-->
+    <div class="container mt-5 habit-containter">
+      <div class="row g-4">
+        <div class="col-12">
+          <div class="card p-3 habit-card">
+            <h4>Add Habit</h4>
+            <form action="/add-habit" method="POST" id="add-habit-form">
+              <input
+                type="text"
+                name="name"
+                class="form-control mb-2 mt-2"
+                placeholder="Enter habit name"
+                required
+              />
+
+              <input
+                type="number"
+                name="difficulty"
+                id="difficulty-input"
+                class="form-control mt-2"
+                placeholder="Place a value between 1-10"
+                min="1"
+                max="10"
+                required
+              />
+              <div id="difficulty-error" class="text-danger mt-1" style="display: none; font-size: 0.875rem;">
+                Difficulty must be between 1 and 10.
+              </div>
+
+              <select name="category" class="form-control mt-2">
+                <option value="physical">Physical</option>
+                <option value="spiritual">Spiritual</option>
+                <option value="healthy">Healthy</option>
+              </select>
+
+              <button type="button" class="btn btn-primary w-100 mt-3" onclick="validateAndSubmitHabit()">Add Habit</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="card p-3 habit-card mb-4">
+            <h4>Total Streak Points</h4>
+            <h5 id="streak-points">🔥 0</h5>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <div class="card p-3 habit-list-card">
+            <div class="d-flex justify-content-between align-items-center">
+              <h4>Habit List</h4>
+              <button
+                class="btn btn-outline-danger btn-sm"
+                onclick="confirmResetHabits()"
+              >
+                Reset All Habits
+              </button>
+            </div>
+            <ul class="list-group mt-3 list-unstyled p-0 border-0" id="habit-list">
+              <!-- Habit items will be added here dynamically -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="container-fluid d-flex justify-content-center align-items-flex-end">
+      <div class="container text-center py-3">
+        <p class="mb-0">Made with ❤️ by group-alpha</p>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <script src="/js/index.js"></script>
+
+    <script>
+      function validateAndSubmitHabit() {
+        const difficulty = Number(document.querySelector("#difficulty-input").value);
+        const errorEl = document.querySelector("#difficulty-error");
+
+        if (difficulty < 1 || difficulty > 10) {
+          errorEl.style.display = "block";
+          return;
+        }
+
+        errorEl.style.display = "none";
+        document.querySelector("#add-habit-form").submit();
+      }
+
+      function confirmResetHabits() {
+        if (confirm("Are you sure you want to delete ALL habits? This cannot be undone.")) {
+          window.location.href = "/reset-habits";
+        }
+      }
+    </script>
+  </body>
+</html>

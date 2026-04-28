@@ -1,0 +1,46 @@
+* {
+  margin: 0;
+  font-family: "Bricolage Grotesque", sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* background: radial-gradient(circle at 50% 30%, #1e3a5f, #0f172a 70%); */
+  background-color: #1b262c;
+  color: white;
+}
+
+.navbar-container {
+  padding: 0;
+}
+
+.navbar-brand {
+  padding-left: 1rem;
+}
+
+.habit-card {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+  color: white;
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5);
+}
+.expense-list-card {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+  color: white;
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5);
+}
+
+footer {
+  background-color: #bbe1fa;
+  color: #1b262c;
+  margin-top: auto;
+}
