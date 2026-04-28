@@ -322,42 +322,46 @@ app.get("/remaining-budget", requireLogin, (req, res) => {
 });
 
 // expenses
-
 app.post("/add-expense", requireLogin, (req, res) => {
-  const { name, amount } = req.body;
+  const { name } = req.body;
+  const amount = parseFloat(req.body.amount);
+
   const user_id = req.session.user.user_id;
   const today = new Date().toLocaleDateString("en-CA");
 
   const month = new Date().getMonth() + 1;
   const year = new Date().getFullYear();
 
+  // basic validation
+  if (!name || isNaN(amount)) {
+    return res.redirect("/expenses");
+  }
+
   db.query(
-    "SELECT * FROM budgets WHERE user_id = ? AND month = ? AND year = ?",
+    "SELECT * FROM budgets WHERE user_id = ? AND month = ? AND year = ? ORDER BY budget_id DESC LIMIT 1",
     [user_id, month, year],
     (err, result) => {
+      if (err) {
+        console.error("BUDGET FETCH ERROR:", err);
+        return res.redirect("/expenses");
+      }
+
       if (result.length === 0) {
-        return res.json({ error: "Set a budget first!" });
+        return res.redirect("/expenses");
       }
 
       const budget_id = result[0].budget_id;
-      const total = result[0].total_budget;
 
       db.query(
-        "SELECT SUM(amount) AS spent FROM expenses WHERE user_id = ? AND MONTH(date) = ? AND YEAR(date) = ?",
-        [user_id, month, year],
-        (err2, expRes) => {
-          const spent = expRes[0].spent || 0;
-          const newTotal = spent + Number(amount);
-
-          if (newTotal > total) {
-            return res.json({ error: "Budget exceeded!" });
+        "INSERT INTO expenses (user_id, budget_id, date, description, amount) VALUES (?, ?, ?, ?, ?)",
+        [user_id, budget_id, today, name, amount],
+        (err) => {
+          if (err) {
+            console.error("INSERT ERROR:", err);
+            return res.send("Database error");
           }
 
-          db.query(
-            "INSERT INTO expenses (user_id, budget_id, date, description, amount) VALUES (?, ?, ?, ?, ?)",
-            [user_id, budget_id, today, name, amount],
-            () => res.json({ success: true }),
-          );
+          res.redirect("/expenses");
         },
       );
     },

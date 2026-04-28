@@ -390,30 +390,30 @@ function filterHabits(category) {
   }
 }
 
-function addExpense(e) {
-  e.preventDefault();
+// function addExpense(e) {
+//   e.preventDefault();
 
-  const name = document.querySelector('[name="name"]').value;
-  const amount = document.querySelector('[name="amount"]').value;
+//   const name = document.querySelector('[name="name"]').value;
+//   const amount = document.querySelector('[name="amount"]').value;
 
-  fetch("/add-expense", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ name, amount }),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.error) {
-        alert(data.error); // simple + effective
-        return;
-      }
+//   fetch("/add-expense", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({ name, amount }),
+//   })
+//     .then((res) => res.json())
+//     .then((data) => {
+//       if (data.error) {
+//         alert(data.error); // simple + effective
+//         return;
+//       }
 
-      loadExpenses();
-      loadRemainingBudget();
-    });
-}
+//       loadExpenses();
+//       loadRemainingBudget();
+//     });
+// }
 
 function syncCategoryPage() {
   fetch("/get-habits")
