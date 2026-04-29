@@ -31,7 +31,7 @@ export function renderHabits(data) {
           </span>
         </div>
 
-        <span class="badge rounded-pill bg-secondary">${habit.category}</span>
+        <span class="badge rounded-pill bg-danger">${habit.category}</span>
 
         <div class="d-flex align-items-center gap-2">
           <span class="badge badge-pill fs-5 text-dark">🔥 ${habit.difficulty_score}</span>
@@ -135,6 +135,11 @@ export async function deleteHabit(id) {
  * This is used when the user checks or unchecks a predefined habit.
  */
 export async function togglePresetHabit(el) {
+  /* el is the button that was clicked by the user
+   * dataset -> way to access custom attributes on HTML elems
+   * that start with data-somethinggoeshere
+   * retrieved through el.dataset.somethinggoeshere
+   */
   const name = el.dataset.name;
   const difficulty = el.dataset.difficulty;
   const category = el.dataset.category;
@@ -158,7 +163,7 @@ export async function togglePresetHabit(el) {
     }
   } catch (err) {
     console.error("Error toggling preset habit:", err);
-    el.checked = !el.checked; // revert checkbox if there was an error
+    el.checked = !el.checked; // reverts checkbox if there was an error
   }
 }
 
@@ -171,6 +176,7 @@ export function filterHabits(category) {
     renderHabits(allHabits);
   } else {
     renderHabits(allHabits.filter((h) => h.category === category));
+    // here habits.filter utilizes a builtin func in JS to sort the categories
   }
 }
 
@@ -184,6 +190,10 @@ export async function syncCategoryPage() {
     const habits = await response.json();
     const names = habits.map((h) => h.habit_name);
 
+    /* finds all checkboxes and checks if they are checked
+     * if they are checked and is also present in the user's saved habits
+     * strike them through and applies the checkbox
+     */
     document.querySelectorAll("input[type='checkbox']").forEach((el) => {
       if (names.includes(el.dataset.name)) {
         el.checked = true;

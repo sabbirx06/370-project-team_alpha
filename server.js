@@ -14,9 +14,9 @@ const PORT = 3000; // Port number where the server will run
 const presetHabits = {
   physical: [
     // Exercise and fitness related habits
-    { name: "Running", difficulty: 5 },
-    { name: "Pushups", difficulty: 7 },
-    { name: "Cycling", difficulty: 6 },
+    { name: "Walking 10,000 Steps", difficulty: 5 },
+    { name: "Going to the gym", difficulty: 7 },
+    { name: "Playing football", difficulty: 6 },
   ],
   spiritual: [
     // Mindfulness and spiritual habits
@@ -26,9 +26,9 @@ const presetHabits = {
   ],
   healthy: [
     // Health and wellness habits
-    { name: "Drink Water", difficulty: 2 },
-    { name: "Sleep Early", displayName: "Sleep Early at 10AM", difficulty: 6 }, // Shows custom display text
-    { name: "Eat Healthy", difficulty: 5 },
+    { name: "Drinking Water", difficulty: 2 },
+    { name: "Sleep Early", displayName: "Going to sleep early", difficulty: 6 }, // Shows custom display text
+    { name: "Eating Healthy", difficulty: 5 },
   ],
 };
 
@@ -104,7 +104,7 @@ app.get("/categories", requireLogin, (req, res) => {
 // These handle user registration and login
 
 app.post("/signup", (req, res) => {
-  // Handle user registration
+  // Handle user registration (object destructuring)
   const { name, email, password } = req.body; // Get form data from signup form
 
   // Check if email already exists in database
@@ -155,7 +155,7 @@ app.post("/login", (req, res) => {
 });
 
 // ================= HABITS API ROUTES =================
-// These handle AJAX requests for habit management
+// These handle requests for habits management
 
 app.post("/add-habit", requireLogin, (req, res) => {
   // Add a new habit for the logged-in user
@@ -184,7 +184,7 @@ app.post("/add-habit", requireLogin, (req, res) => {
 });
 
 app.get("/get-habits", requireLogin, (req, res) => {
-  // Get all habits for the logged-in user (used by AJAX to load habits list)
+  // Get all habits for the logged-in user
   const user_id = req.session.user.user_id;
 
   // Complex query that joins habits with today's log to check completion status
@@ -272,6 +272,7 @@ app.get("/streak", requireLogin, (req, res) => {
   // Calculate today's streak points (sum of difficulty scores of completed habits)
   const user_id = req.session.user.user_id;
 
+  // Gets the sum of all the difficulty score in the habit_log table + habit table
   db.query(
     `SELECT SUM(h.difficulty_score) AS streak
      FROM habit_logs hl

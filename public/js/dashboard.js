@@ -35,17 +35,17 @@ export async function loadDashboard() {
       if (data.remaining < 0) {
         warningEl.style.display = "block";
         warningEl.className = "badge bg-danger mt-2";
-        warningEl.innerText = `Overspent by ৳ ${Math.abs(data.remaining)}`;
+        warningEl.innerText = `🚨 Overspent by ৳ ${Math.abs(data.remaining)}`;
       } else if (data.totalBudget > 0) {
         const percent = (data.remaining / data.totalBudget) * 100;
         if (percent <= 10) {
           warningEl.style.display = "block";
           warningEl.className = "badge bg-danger mt-2";
-          warningEl.innerText = `Critical budget: ${Math.max(0, Math.round(percent))}% remaining`;
+          warningEl.innerText = `⚠ Critical budget: ${Math.max(0, Math.round(percent))}% remaining`;
         } else if (percent <= 30) {
           warningEl.style.display = "block";
           warningEl.className = "badge bg-warning mt-2 text-dark";
-          warningEl.innerText = "Budget is running low";
+          warningEl.innerText = "⚠ Budget is running low";
         } else {
           warningEl.style.display = "none";
         }
