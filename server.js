@@ -7,7 +7,7 @@ const db = require("./db"); // Database connection and queries
 const session = require("express-session"); // Session management for user authentication
 
 const app = express(); // Create the Express application
-const PORT = 3000; // Port number where the server will run
+const PORT = process.env.PORT || 3000; // Port number where the server will run
 
 // Preset habits data - predefined habits users can quickly add to their tracking
 // Each habit has a name, difficulty level (1-10), and some have custom display names
